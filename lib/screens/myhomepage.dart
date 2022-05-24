@@ -28,7 +28,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           CoursesCard(nume_algoritm: 'nume_algoritm_vic'),
-          GraphW(),
         ],
       ),
     );

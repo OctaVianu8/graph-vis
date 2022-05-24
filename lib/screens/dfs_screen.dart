@@ -3,7 +3,9 @@ import 'package:graph_vis_test_1/graph/graph.dart';
 
 class DfsScreen extends StatelessWidget {
   final String name;
-  const DfsScreen({Key? key, required this.name}) : super(key: key);
+  final String? source;
+  const DfsScreen({Key? key, required this.name, this.source})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +14,13 @@ class DfsScreen extends StatelessWidget {
         title: Text(name),
       ),
       body: Column(
-        mainAxisSize: MainAxisSize.max,
+        //mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: GraphW()),
+          Expanded(
+              child: GraphW(
+            source: source,
+          )),
         ],
       ),
     );
