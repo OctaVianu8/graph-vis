@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graph_vis_test_1/screens/dfs.dart';
+import 'package:graph_vis_test_1/screens/dfs_screen.dart';
 import 'package:graph_vis_test_1/screens/myhomepage.dart';
 
 void main() {
