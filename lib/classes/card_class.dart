@@ -33,9 +33,8 @@ class AlgoCardList
   {
     String _name='Depth-first search (DFS)';
     Image _photo=(Image.asset('DFS_cover.png') );
-    Widget _screen = DFS_Screen(title: _name,);
+    Widget _screen = DFS_Screen(title: _name, source: "graph_data/example1.txt",);
     _Card _card = _Card(algo_name: _name, algo_photo: _photo, algo_screen: _screen);
     lista.add(_card);
   }
-  //map(Map Function(dynamic context) param0) {}
 }
