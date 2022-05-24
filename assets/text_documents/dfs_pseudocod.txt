@@ -1,0 +1,19 @@
+void DFS(node initNode) //initNode = Initial Node
+{
+    initialize stack;
+    add initNode to stack
+    note initNode as visited
+    while stack is not empty
+    {
+        currNode <- top node of stack
+        pop top node of stack
+        for each adjNode that is adjacent to currNode 
+        {
+            if adjNode is not visited
+            {
+                add adjNode to stack
+                mark adjNode as visited
+            }
+        }
+    }
+}
