@@ -15,6 +15,7 @@ class CoursesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.grey[200],
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
