@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:graph_vis_test_1/graph/graph.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -24,9 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         backgroundColor: Colors.red,
       ),
-      body: ListView(
+      body: Column(
         children: [
-          CoursesCard(nume_algoritm: 'nume_algoritm'),
+          CoursesCard(nume_algoritm: 'nume_algoritm_vic'),
+          GraphW(),
         ],
       ),
     );
@@ -34,7 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CoursesCard extends StatelessWidget {
-
   CoursesCard({required String this.nume_algoritm, Key? key}) : super(key: key);
 
   final String nume_algoritm;
