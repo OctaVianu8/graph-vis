@@ -9,24 +9,20 @@ import 'package:graphview/GraphView.dart';
 import 'package:graph_vis_test_1/util.dart';
 import '../widgets/desc_or_pseudo.dart';
 
-class DFSScreen extends StatefulWidget {
+class DFS_Screen extends StatefulWidget {
   final String title;
-  final String source;
-  //final Node begin;
-  const DFSScreen({
-    Key? key,
-    required this.title,
-    required this.source,
-  }) : super(key: key);
+  final String? source;
+  const DFS_Screen({Key? key, required this.title, this.source})
+      : super(key: key);
 
   @override
-  State<DFSScreen> createState() => _DFSScreenState();
+  State<DFS_Screen> createState() => _DFS_ScreenState();
 }
 
-class _DFSScreenState extends State<DFSScreen> {
-  Map<Node, bool> node_state = Map();
+class _DFS_ScreenState extends State<DFS_Screen> {
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
+  Map<Node,bool> node_state=Map();
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +44,8 @@ class _DFSScreenState extends State<DFSScreen> {
                 children: [
                   Flexible(
                     child: GraphW(
+                      source: widget.source, 
                       visited: node_state,
-                      source: widget.source,
-                      //graph: loadGraphFromAsset(widget.source),
                     ),
                   ),
                   SizedBox(
@@ -82,6 +77,7 @@ class _DFSScreenState extends State<DFSScreen> {
             child: Container(
               padding: EdgeInsets.all(32.0),
               margin: EdgeInsets.all(32.0),
+              color: Colors.grey[300],
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -101,7 +97,6 @@ class _DFSScreenState extends State<DFSScreen> {
                   ),
                 ],
               ),
-              color: Colors.grey[300],
             ),
           ),
         ],

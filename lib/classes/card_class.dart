@@ -34,7 +34,7 @@ class AlgoCardList {
   void add_dfs_card() {
     String _name = 'Depth-first search (DFS)';
     Image _photo = (Image.asset('DFS_cover.png'));
-    Widget _screen = DFSScreen(
+    Widget _screen = DFS_Screen(
       title: _name,
       source: "graph_data/example1.txt",
     );
