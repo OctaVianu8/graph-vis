@@ -13,3 +13,9 @@ Future<Graph> loadGraphFromAsset(String name) async {
   }
   return graph;
 }
+
+Map<String, Graph> preloads = Map();
+
+void addGraph(String name, String file) async {
+  loadGraphFromAsset(file).then((value) => preloads[name] = value);
+}
