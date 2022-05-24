@@ -5,20 +5,23 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
-
+import 'package:graphview/GraphView.dart';
+import 'package:graph_vis_test_1/util.dart';
 import '../widgets/desc_or_pseudo.dart';
 
 class DFS_Screen extends StatefulWidget {
+
   final String title;
-  final String? source;
-  const DFS_Screen({Key? key, required this.title, this.source})
+  final String source;
+  const DFSScreen({Key? key, required this.title, required this.source})
       : super(key: key);
 
   @override
-  State<DFS_Screen> createState() => _DFS_ScreenState();
+  State<DFSScreen> createState() => _DFSScreenState();
 }
 
 class _DFS_ScreenState extends State<DFS_Screen> {
+  Map<Node, bool> node_state = Map();
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
@@ -42,8 +45,10 @@ class _DFS_ScreenState extends State<DFS_Screen> {
                 children: [
                   Flexible(
                     child: GraphW(
-                      source: widget.source,
-                    ),
+                        visited: node_state,
+                         source: widget.source,
+                    //graph: loadGraphFromAsset(widget.source),
+                      ),
                   ),
                   SizedBox(
                     height: 80,
@@ -56,7 +61,12 @@ class _DFS_ScreenState extends State<DFS_Screen> {
                           width: 10,
                         ),
                         ElevatedButton(
-                            onPressed: () {}, child: Text('Next Step')),
+                            onPressed:() {
+                            setState(() {
+                              node_state[Node.Id(2)] = true;
+                              });
+                              }, 
+                            child: Text('Next Step')),
                       ],
                     ),
                   )
