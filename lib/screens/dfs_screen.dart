@@ -10,20 +10,19 @@ import 'package:graph_vis_test_1/util.dart';
 import '../widgets/desc_or_pseudo.dart';
 
 class DFS_Screen extends StatefulWidget {
-
   final String title;
-  final String source;
-  const DFSScreen({Key? key, required this.title, required this.source})
+  final String? source;
+  const DFS_Screen({Key? key, required this.title, this.source})
       : super(key: key);
 
   @override
-  State<DFSScreen> createState() => _DFSScreenState();
+  State<DFS_Screen> createState() => _DFS_ScreenState();
 }
 
 class _DFS_ScreenState extends State<DFS_Screen> {
-  Map<Node, bool> node_state = Map();
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
+  Map<Node,bool> node_state=Map();
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +44,9 @@ class _DFS_ScreenState extends State<DFS_Screen> {
                 children: [
                   Flexible(
                     child: GraphW(
-                        visited: node_state,
-                         source: widget.source,
-                    //graph: loadGraphFromAsset(widget.source),
-                      ),
+                      source: widget.source, 
+                      visited: node_state,
+                    ),
                   ),
                   SizedBox(
                     height: 80,
@@ -61,11 +59,11 @@ class _DFS_ScreenState extends State<DFS_Screen> {
                           width: 10,
                         ),
                         ElevatedButton(
-                            onPressed:() {
-                            setState(() {
-                              node_state[Node.Id(2)] = true;
+                            onPressed: () {
+                              setState(() {
+                                node_state[Node.Id(2)] = true;
                               });
-                              }, 
+                            },
                             child: Text('Next Step')),
                       ],
                     ),
@@ -79,6 +77,7 @@ class _DFS_ScreenState extends State<DFS_Screen> {
             child: Container(
               padding: EdgeInsets.all(32.0),
               margin: EdgeInsets.all(32.0),
+              color: Colors.grey[300],
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -98,7 +97,6 @@ class _DFS_ScreenState extends State<DFS_Screen> {
                   ),
                 ],
               ),
-              color: Colors.grey[300],
             ),
           ),
         ],
