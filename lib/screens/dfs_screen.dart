@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
 
-class DfsScreen extends StatelessWidget {
-  final String name;
-  const DfsScreen({Key? key, required this.name}) : super(key: key);
+class DFS_Screen extends StatelessWidget {
+  final String title;
+  DFS_Screen({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(title),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,

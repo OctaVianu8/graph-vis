@@ -9,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const DfsScreen(name: "Dfs Ecran lets goo"),
+      home: MyHomePage(title: 'GraphVis2000'),
+      //home: const DfsScreen(name: "Dfs Ecran lets goo"),
     );
   }
 }

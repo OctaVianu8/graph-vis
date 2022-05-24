@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graph_vis_test_1/algorithm%20screens/bfs_screen.dart';
+import 'package:graph_vis_test_1/screens/bfs_screen.dart';
+
+import '../screens/dfs_screen.dart';
 
 class _Card
 {
@@ -22,7 +24,7 @@ class AlgoCardList
   { 
     String _name='Breadth-first search (BFS)';
     Image _photo=(Image.asset('BFS_cover.png') );
-    Widget _screen = BFS_Screen();
+    Widget _screen = BFS_Screen(title: _name,);
     _Card _card = _Card(algo_name: _name, algo_photo: _photo, algo_screen: _screen);
     lista.add(_card);
   }
@@ -31,7 +33,7 @@ class AlgoCardList
   {
     String _name='Depth-first search (DFS)';
     Image _photo=(Image.asset('DFS_cover.png') );
-    Widget _screen = BFS_Screen();
+    Widget _screen = DFS_Screen(title: _name,);
     _Card _card = _Card(algo_name: _name, algo_photo: _photo, algo_screen: _screen);
     lista.add(_card);
   }
