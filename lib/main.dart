@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graph_vis_test_1/screens/dfs.dart';
 import 'package:graph_vis_test_1/screens/myhomepage.dart';
 
 void main() {
@@ -16,8 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Test Octavian'),
+      home: const DfsScreen(name: "Dfs Ecran lets goo"),
     );
   }
 }
-

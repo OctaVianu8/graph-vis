@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graph_vis_test_1/classes/card_class.dart';
 
 import '../widgets/courses_card.dart';
+import 'package:graph_vis_test_1/graph/graph.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
