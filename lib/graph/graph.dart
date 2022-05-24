@@ -7,30 +7,38 @@ import 'package:graph_vis_test_1/graph/node.dart';
 
 class GraphW extends StatefulWidget {
   final String? source;
+  final Map visited;
 
-  const GraphW({Key? key, this.source}) : super(key: key);
+  const GraphW({Key? key, this.source, required this.visited})
+      : super(key: key);
 
   @override
   State<GraphW> createState() => _GraphWState();
 }
 
 class _GraphWState extends State<GraphW> {
+  final attractionRate = 50.0;
+  final attractionPrecentage = 100.0;
+
   @override
   Widget build(BuildContext context) {
     return InteractiveViewer(
       constrained: false,
       boundaryMargin: EdgeInsets.all(100),
       minScale: 0.01,
-      maxScale: 5.6,
+      maxScale: 1.0,
       child: GraphView(
         graph: graph,
         algorithm: FruchtermanReingoldAlgorithm(
-          attractionPercentage: 100.0,
-          attractionRate: 50.0,
+          attractionPercentage: attractionPrecentage,
+          attractionRate: attractionRate,
         ),
         builder: (Node node) {
           // I can decide what widget should be shown here based on the id
-          return NodeW();
+          return NodeW(
+            visited:
+                widget.visited[node] != null ? widget.visited[node]! : false,
+          );
         },
       ),
     );
@@ -40,7 +48,8 @@ class _GraphWState extends State<GraphW> {
 
   @override
   void initState() {
-    loadGraphFromAsset(widget.source!);
+    // debug visited[Node.Id(2)] = true;
+    if (widget.source != null) loadGraphFromAsset(widget.source!);
   }
 
   void loadGraphFromAsset(String name) async {
