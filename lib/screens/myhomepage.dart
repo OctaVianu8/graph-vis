@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:graph_vis_test_1/classes/card_class.dart';
+
+import '../widgets/courses_card.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,6 +17,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    AlgoCardList algoCardList = AlgoCardList();
+    algoCardList.add_all_cards();
+
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
@@ -25,44 +31,14 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         backgroundColor: Colors.red,
       ),
-      body: Column(
-        children: [
-          CoursesCard(nume_algoritm: 'nume_algoritm_vic'),
-          GraphW(),
-        ],
-      ),
-    );
-  }
-}
-
-class CoursesCard extends StatelessWidget {
-  CoursesCard({required String this.nume_algoritm, Key? key}) : super(key: key);
-
-  final String nume_algoritm;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-      child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            nume_algoritm,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Image(
-              image: NetworkImage(
-                  'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif')),
-          TextButton(onPressed: () {}, child: const Text('Learn Algorithm')),
-        ],
+      body: ListView(
+        children: algoCardList.lista.map((algoList) {
+          return CoursesCard(
+            nume_algoritm: algoList.algo_name,
+            poza_algoritm: algoList.algo_photo,
+            widget_algoritm: algoList.algo_screen,
+          );
+        }).toList(),
       ),
     );
   }
