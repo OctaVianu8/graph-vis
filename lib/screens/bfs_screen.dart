@@ -31,14 +31,13 @@ class BFSScreen extends StatefulWidget {
 
 class _BFSScreenState extends State<BFSScreen> {
   late Graph graph;
-  Map<Node, NodeStates> node_state = Map();
-  List<int> dfstack = [];
+  Map<int, NodeStates> node_state = Map();
+  List<int> bfstack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
   @override
   Widget build(BuildContext context) {
-    dfstack.add(widget.begin);
     final scrollController = ScrollController(initialScrollOffset: 0);
     ScrollController _scrollController = ScrollController();
 
@@ -47,13 +46,19 @@ class _BFSScreenState extends State<BFSScreen> {
       title: widget.title,
       source: widget.source,
       begin: widget.begin,
-      graphW: GraphW( source: widget.source, visited: node_state, ),
+      graphW: GraphW(
+        source: widget.source,
+        state: node_state,
+      ),
       algoWidget: QueueWidget(),
+      next_func: advanceBfs,
+      prev_func: () {},
     );
   }
 
   @override
   void initState() {
+    bfstack.add(widget.begin);
     loadGraph();
   }
 
@@ -61,10 +66,22 @@ class _BFSScreenState extends State<BFSScreen> {
     loadGraphFromAsset(widget.source).then((value) => graph = value);
   }
 
-  void advanceDfs() {
+  void advanceBfs() {
     setState(() {
-      int front = dfstack.last;
-      //for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+      int front = bfstack.first;
+      bfstack.removeAt(0);
+      node_state[front] = NodeStates.visited;
+      for (Node adj
+          in graph.getOutEdges(Node.Id(front)).map((e) => e.destination)) {
+        if (node_state[adj.key!.value] == null) {
+          //print('aici ${adj.key!.value}');
+          //print(node_state[adj.key!.value]);
+          node_state[adj.key!.value] = NodeStates.stacked;
+          bfstack.add(adj.key!.value);
+          //print(bfstack);
+        }
+      }
+      //print(bfstack);
     });
   }
 }
@@ -92,8 +109,7 @@ class _QueueWidgetState extends State<QueueWidget> {
             itemCount: 6, //stack.size
             itemBuilder: (context, index) {
               return Container(
-                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                  child: Text('da'));
+                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8), child: Text('da'));
             },
           ),
         ),

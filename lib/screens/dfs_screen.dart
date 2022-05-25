@@ -32,6 +32,7 @@ class DFSScreen extends StatefulWidget {
 class _DFSScreenState extends State<DFSScreen> {
   late Graph graph;
   Map<int, NodeStates> node_state = Map();
+  Map<int, int> stack_pos = Map();
   List<int> dfstack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
@@ -45,8 +46,13 @@ class _DFSScreenState extends State<DFSScreen> {
       title: widget.title,
       source: widget.source,
       begin: widget.begin,
-      graphW: GraphW( source: widget.source, visited: node_state, ),
+      graphW: GraphW(
+        source: widget.source,
+        state: node_state,
+      ),
       algoWidget: StackWidget(),
+      next_func: advanceDfs,
+      prev_func: () {},
     );
   }
 
@@ -106,8 +112,7 @@ class _StackWidgetState extends State<StackWidget> {
             itemCount: 6, //stack.size
             itemBuilder: (context, index) {
               return Container(
-                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                  child: Text('da'));
+                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8), child: Text('da'));
             },
           ),
         ),

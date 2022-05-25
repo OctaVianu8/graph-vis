@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
@@ -8,9 +9,9 @@ import 'package:graph_vis_test_1/graph/node.dart';
 
 class GraphW extends StatefulWidget {
   final String? source;
-  final Map visited;
+  final Map state;
 
-  GraphW({Key? key, this.source, required this.visited}) : super(key: key);
+  GraphW({Key? key, this.source, required this.state}) : super(key: key);
 
   @override
   State<GraphW> createState() => _GraphWState();
@@ -43,8 +44,8 @@ class _GraphWState extends State<GraphW> {
             stackSize: 0,
             passPos: 0,
             id: node.key!.value,
-            state: widget.visited[node.key!.value] != null
-                ? widget.visited[node.key!.value]
+            state: widget.state[node.key!.value] != null
+                ? widget.state[node.key!.value]
                 : NodeStates.idle,
             //state: NodeStates.idle,
           );
@@ -69,6 +70,11 @@ class _GraphWState extends State<GraphW> {
         var nrs = line.split(' ');
         //print(nrs[0] + ' ' + nrs[1] + 'aici\n');
         graph.addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
+      }
+      //evil position hack
+      for (Node e in graph.nodes) {
+        e.position = Offset(Random().nextDouble() * 10.0 + 250.0,
+            Random().nextDouble() * 10.0 + 250.0);
       }
     });
   }
