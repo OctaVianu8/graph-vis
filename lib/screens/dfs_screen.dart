@@ -15,7 +15,7 @@ import '../widgets/desc_or_pseudo.dart';
 class DFSScreen extends StatefulWidget {
   final String title;
   final String source;
-  final Node begin;
+  final int begin;
   //final Node begin;
   const DFSScreen({
     Key? key,
@@ -25,20 +25,18 @@ class DFSScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DFS_Screen> createState() => _DFS_ScreenState();
+  State<DFSScreen> createState() => _DFSScreenState();
 }
 
 class _DFSScreenState extends State<DFSScreen> {
   late Graph graph;
-  Map<Node, NodeStates> node_state = Map();
-  List<Node> dfstack = [];
+  Map<int, NodeStates> node_state = Map();
+  List<int> dfstack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
-  Map<Node, bool> node_state = Map();
 
   @override
   Widget build(BuildContext context) {
-    dfstack.add(widget.begin);
     final scrollController = ScrollController(initialScrollOffset: 0);
     ScrollController _scrollController = ScrollController();
 
@@ -61,8 +59,8 @@ class _DFSScreenState extends State<DFSScreen> {
                 children: [
                   Flexible(
                     child: GraphW(
-                      source: widget.source,
                       visited: node_state,
+                      source: widget.source,
                     ),
                   ),
                   Container(
@@ -80,11 +78,20 @@ class _DFSScreenState extends State<DFSScreen> {
                               child: Scrollbar(
                                 controller: scrollController,
                                 child: ListView.builder(
-                                controller: scrollController,
+                                  controller: scrollController,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: 6, //stack.size
                                   itemBuilder: (context, index) {
-                                    return Container(padding: EdgeInsets.fromLTRB(8, 8, 0, 8), child: NodeW(visited: true));
+                                    return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(8, 8, 0, 8),
+                                        child: NodeW(
+                                          id: 0,
+                                          passPos: 0,
+                                          state: NodeStates.idle,
+                                          stackPos: 0,
+                                          stackSize: 0,
+                                        ));
                                   },
                                 ),
                               ),
@@ -95,8 +102,9 @@ class _DFSScreenState extends State<DFSScreen> {
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  node_state[Node.Id(2)] = true;
+                                  advanceDfs(); //node_state[Node.Id(2)] = NodeStates.stacked;
                                 });
+                                //advanceDfs();
                               },
                               child: Text('Next Step')),
                         ],
@@ -141,17 +149,32 @@ class _DFSScreenState extends State<DFSScreen> {
 
   @override
   void initState() {
-    loadGraph();
+    dfstack.add(widget.begin);
+    node_state[dfstack.last] = NodeStates.stacked;
+    initGraph();
   }
 
-  void loadGraph() async {
-    loadGraphFromAsset(widget.source).then((value) => graph = value);
+  void initGraph() async {
+    loadGraphFromAsset(widget.source).then((value) {
+      graph = value;
+      print(graph.edges);
+    });
   }
 
   void advanceDfs() {
     setState(() {
-      Node front = dfstack.last;
-      for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+      int front = dfstack.last;
+      dfstack.removeLast();
+      for (Node adj
+          in graph.getOutEdges(Node.Id(front)).map((e) => e.destination)) {
+        if (node_state[adj.key!.value] == null) {
+          node_state[adj.key!.value] = NodeStates.stacked;
+          dfstack.add(adj.key!.value);
+        }
+      }
+      node_state[front] = NodeStates.visited;
+
+      print(node_state);
     });
   }
 }
