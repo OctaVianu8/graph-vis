@@ -8,7 +8,8 @@ import 'package:flutter_highlight/themes/monokai-sublime.dart';
 
 class DescOrPseudo extends StatefulWidget {
   int tutorialState;
-  DescOrPseudo({required this.tutorialState, Key? key}) : super(key: key);
+  String algorithm_name;
+  DescOrPseudo({required this.tutorialState, required this.algorithm_name, Key? key}) : super(key: key);
 
   @override
   State<DescOrPseudo> createState() => _DescOrPseudoState();
@@ -21,9 +22,9 @@ class _DescOrPseudoState extends State<DescOrPseudo> {
   fetchFileData() async {
     String responseText;
     if(widget.tutorialState == 1) {
-      responseText = await rootBundle.loadString('text_documents/dfs_pseudocod.txt');
+      responseText = await rootBundle.loadString('text_documents/${widget.algorithm_name}_pseudocode.txt');
     } else {
-      responseText = await rootBundle.loadString('text_documents/dfs_description.txt');
+      responseText = await rootBundle.loadString('text_documents/${widget.algorithm_name}_description.txt');
     }
     setState(() {
       data=responseText;

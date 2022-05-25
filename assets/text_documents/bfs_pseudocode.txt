@@ -1,0 +1,19 @@
+void BFS(node initNode) //initNode = Start Node
+{
+    initialize queue;
+    add initNode to queue
+    note initNode as visited
+    while queue is not empty
+    {
+        currNode <- front node of queue
+        pop front node of queue
+        for each adjNode that is adjacent to currNode 
+        {
+            if adjNode is not visited
+            {
+                push adjNode to queue
+                mark adjNode as visited
+            }
+        }
+    }
+}

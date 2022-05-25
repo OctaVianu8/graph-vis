@@ -1,2 +1,4 @@
 Depth-first search (DFS) is an algorithm for traversing graph data structures. 
 It starts at the start node and explores as far as possible along each branch before backtracking. 
+In the implementation, it is basically the same as BFS, but uses a stack instead of a queue. 
+This also allows different recursive implementations.
