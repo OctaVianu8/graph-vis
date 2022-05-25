@@ -5,6 +5,7 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
+import 'package:graph_vis_test_1/graph/node.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:graph_vis_test_1/util.dart';
 import '../widgets/desc_or_pseudo.dart';
@@ -12,11 +13,13 @@ import '../widgets/desc_or_pseudo.dart';
 class DFSScreen extends StatefulWidget {
   final String title;
   final String source;
+  final Node begin;
   //final Node begin;
   const DFSScreen({
     Key? key,
     required this.title,
     required this.source,
+    required this.begin,
   }) : super(key: key);
 
   @override
@@ -24,12 +27,17 @@ class DFSScreen extends StatefulWidget {
 }
 
 class _DFSScreenState extends State<DFSScreen> {
-  Map<Node, bool> node_state = Map();
+  late Graph graph;
+  Map<Node, NodeStates> node_state = Map();
+  List<Node> dfstack = [];
+
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
   @override
   Widget build(BuildContext context) {
+    dfstack.add(widget.begin);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -66,7 +74,7 @@ class _DFSScreenState extends State<DFSScreen> {
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                node_state[Node.Id(2)] = true;
+                                node_state[Node.Id(2)] = NodeStates.visited;
                               });
                             },
                             child: Text('Next Step')),
@@ -107,5 +115,21 @@ class _DFSScreenState extends State<DFSScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    loadGraph();
+  }
+
+  void loadGraph() async {
+    loadGraphFromAsset(widget.source).then((value) => graph = value);
+  }
+
+  void advanceDfs() {
+    setState(() {
+      Node front = dfstack.last;
+      for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+    });
   }
 }
