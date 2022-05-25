@@ -6,28 +6,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
+import 'package:graph_vis_test_1/graph/node.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:graph_vis_test_1/util.dart';
 import '../graph/node.dart';
 import '../widgets/desc_or_pseudo.dart';
 
-class DFS_Screen extends StatefulWidget {
+class DFSScreen extends StatefulWidget {
   final String title;
-  final String? source;
-  const DFS_Screen({Key? key, required this.title, this.source})
-      : super(key: key);
+  final String source;
+  final Node begin;
+  //final Node begin;
+  const DFSScreen({
+    Key? key,
+    required this.title,
+    required this.source,
+    required this.begin,
+  }) : super(key: key);
 
   @override
   State<DFS_Screen> createState() => _DFS_ScreenState();
 }
 
-class _DFS_ScreenState extends State<DFS_Screen> {
+class _DFSScreenState extends State<DFSScreen> {
+  late Graph graph;
+  Map<Node, NodeStates> node_state = Map();
+  List<Node> dfstack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
   Map<Node, bool> node_state = Map();
 
   @override
   Widget build(BuildContext context) {
+    dfstack.add(widget.begin);
     final scrollController = ScrollController(initialScrollOffset: 0);
     ScrollController _scrollController = ScrollController();
 
@@ -126,5 +137,21 @@ class _DFS_ScreenState extends State<DFS_Screen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    loadGraph();
+  }
+
+  void loadGraph() async {
+    loadGraphFromAsset(widget.source).then((value) => graph = value);
+  }
+
+  void advanceDfs() {
+    setState(() {
+      Node front = dfstack.last;
+      for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+    });
   }
 }

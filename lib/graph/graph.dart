@@ -36,8 +36,13 @@ class _GraphWState extends State<GraphW> {
         builder: (Node node) {
           // I can decide what widget should be shown here based on the id
           return NodeW(
-            visited:
-                widget.visited[node] != null ? widget.visited[node]! : false,
+            stackPos: 0,
+            stackSize: 0,
+            passPos: 0,
+            id: node.key!.value,
+            state: widget.visited[node] != null
+                ? widget.visited[node]
+                : NodeStates.idle,
           );
         },
       ),
@@ -58,7 +63,7 @@ class _GraphWState extends State<GraphW> {
     setState(() {
       for (String line in LineSplitter.split(data)) {
         var nrs = line.split(' ');
-        print(nrs[0] + ' ' + nrs[1] + 'aici\n');
+        //print(nrs[0] + ' ' + nrs[1] + 'aici\n');
         graph.addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
       }
     });
