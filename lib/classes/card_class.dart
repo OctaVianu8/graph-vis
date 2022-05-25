@@ -41,7 +41,7 @@ class AlgoCardList {
     Image _photo = (Image.asset('DFS_cover.png'));
     Widget _screen = DFSScreen(
       title: _name,
-      source: "graph_data/example1.txt", 
+      source: "graph_data/example1.txt",
       begin: 1,
     );
     _Card _card =

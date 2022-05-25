@@ -31,17 +31,15 @@ class DFSScreen extends StatefulWidget {
 
 class _DFSScreenState extends State<DFSScreen> {
   late Graph graph;
-  Map<Node, NodeStates> node_state = Map();
+  Map<int, NodeStates> node_state = Map();
   List<int> dfstack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
   @override
   Widget build(BuildContext context) {
-    dfstack.add(widget.begin);
     final scrollController = ScrollController(initialScrollOffset: 0);
     ScrollController _scrollController = ScrollController();
-
     return Screen(
       algo_name: 'dfs',
       title: widget.title,
@@ -54,17 +52,33 @@ class _DFSScreenState extends State<DFSScreen> {
 
   @override
   void initState() {
-    loadGraph();
+    dfstack.add(widget.begin);
+    node_state[dfstack.last] = NodeStates.stacked;
+    initGraph();
   }
 
-  void loadGraph() async {
-    loadGraphFromAsset(widget.source).then((value) => graph = value);
+  void initGraph() async {
+    loadGraphFromAsset(widget.source).then((value) {
+      graph = value;
+      print(graph.edges);
+    });
   }
 
   void advanceDfs() {
     setState(() {
       int front = dfstack.last;
-      //for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+
+      dfstack.removeLast();
+      for (Node adj
+          in graph.getOutEdges(Node.Id(front)).map((e) => e.destination)) {
+        if (node_state[adj.key!.value] == null) {
+          node_state[adj.key!.value] = NodeStates.stacked;
+          dfstack.add(adj.key!.value);
+        }
+      }
+      node_state[front] = NodeStates.visited;
+
+      print(node_state);
     });
   }
 }

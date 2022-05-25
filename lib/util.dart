@@ -3,7 +3,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 Future<Graph> loadGraphFromAsset(String name) async {
-  print('aici\n');
+  //print('aici\n');
   Graph graph = Graph();
   String data = await rootBundle.loadString(name);
   for (String line in LineSplitter.split(data)) {
