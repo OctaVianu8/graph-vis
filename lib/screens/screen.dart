@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
@@ -19,17 +18,21 @@ class Screen extends StatefulWidget {
   final GraphW graphW;
   final Widget algoWidget;
   final String algo_name;
+  final VoidCallback next_func;
+  final VoidCallback prev_func;
 
   //final Node begin;
-  Screen({
-    Key? key,
-    required this.title,
-    required this.source,
-    required this.begin,
-    required this.graphW,
-    required this.algoWidget,
-    required this.algo_name,
-  }) : super(key: key);
+  Screen(
+      {Key? key,
+      required this.title,
+      required this.source,
+      required this.begin,
+      required this.graphW,
+      required this.algoWidget,
+      required this.algo_name,
+      required this.next_func,
+      required this.prev_func})
+      : super(key: key);
 
   @override
   State<Screen> createState() => _ScreenState();
@@ -74,15 +77,16 @@ class _ScreenState extends State<Screen> {
                   Container(
                     color: Colors.blue[100],
                     child: SizedBox(
-                      height: 120,
+                      height: 300, //cam din burta dar na
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           widget.algoWidget,
                           ElevatedButton(
-                              onPressed: () {}, child: Text('Previous Step')),
+                              onPressed: widget.prev_func,
+                              child: Text('Previous Step')),
                           ElevatedButton(
-                              onPressed: () {},
+                              onPressed: widget.next_func,
                               child: Text('Next Step')),
                         ],
                       ),
@@ -101,7 +105,9 @@ class _ScreenState extends State<Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DescOrPseudo(tutorialState: tutorialState, algorithm_name: widget.algo_name),
+                  DescOrPseudo(
+                      tutorialState: tutorialState,
+                      algorithm_name: widget.algo_name),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

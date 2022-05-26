@@ -12,6 +12,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:graph_vis_test_1/util.dart';
 import '../graph/node.dart';
 import '../widgets/desc_or_pseudo.dart';
+import 'package:graph_vis_test_1/widgets/stack_view.dart';
 
 class BFSScreen extends StatefulWidget {
   final String title;
@@ -31,14 +32,14 @@ class BFSScreen extends StatefulWidget {
 
 class _BFSScreenState extends State<BFSScreen> {
   late Graph graph;
-  Map<Node, NodeStates> node_state = Map();
-  List<int> dfstack = [];
+  Map<int, NodeStates> node_state = Map();
+  List<int> bfstack = [];
+  List<int> vistack= [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
   @override
   Widget build(BuildContext context) {
-    dfstack.add(widget.begin);
     final scrollController = ScrollController(initialScrollOffset: 0);
     ScrollController _scrollController = ScrollController();
 
@@ -47,13 +48,27 @@ class _BFSScreenState extends State<BFSScreen> {
       title: widget.title,
       source: widget.source,
       begin: widget.begin,
-      graphW: GraphW( source: widget.source, visited: node_state, ),
-      algoWidget: QueueWidget(),
+      graphW: GraphW(
+        source: widget.source,
+        state: node_state,
+        stack: bfstack,
+        vistack: vistack,
+      ),
+      algoWidget: Column(
+        children: [
+          StackView(queue: bfstack,name: 'Queue',state:NodeStates.stacked),
+          StackView(queue: vistack,name: 'Output', state:NodeStates.visited),
+        ],
+      ),
+      next_func: advanceBfs,
+      prev_func: () {},
     );
   }
 
   @override
   void initState() {
+    bfstack.add(widget.begin);
+    node_state[widget.begin]=NodeStates.stacked;
     loadGraph();
   }
 
@@ -61,43 +76,24 @@ class _BFSScreenState extends State<BFSScreen> {
     loadGraphFromAsset(widget.source).then((value) => graph = value);
   }
 
-  void advanceDfs() {
+  void advanceBfs() {
+    if(bfstack.isEmpty) return;
     setState(() {
-      int front = dfstack.last;
-      //for (Node adj in graph.getOutEdges(front).map((e) => e.destination)) {}
+      int front = bfstack.first;
+      bfstack.removeAt(0);
+      node_state[front] = NodeStates.visited;
+      vistack.add(front);
+      for (Node adj
+          in graph.getOutEdges(Node.Id(front)).map((e) => e.destination)) {
+        if (node_state[adj.key!.value] == null) {
+          //print('aici ${adj.key!.value}');
+          //print(node_state[adj.key!.value]);
+          node_state[adj.key!.value] = NodeStates.stacked;
+          bfstack.add(adj.key!.value);
+          //print(bfstack);
+        }
+      }
+      //print(bfstack);
     });
-  }
-}
-
-class QueueWidget extends StatefulWidget {
-  const QueueWidget({Key? key}) : super(key: key);
-
-  @override
-  State<QueueWidget> createState() => _QueueWidgetState();
-}
-
-class _QueueWidgetState extends State<QueueWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(16.0),
-      color: Colors.blue[200],
-      child: SizedBox(
-        width: 600,
-        child: Scrollbar(
-          controller: ScrollController(initialScrollOffset: 0),
-          child: ListView.builder(
-            controller: ScrollController(initialScrollOffset: 0),
-            scrollDirection: Axis.horizontal,
-            itemCount: 6, //stack.size
-            itemBuilder: (context, index) {
-              return Container(
-                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                  child: Text('da'));
-            },
-          ),
-        ),
-      ),
-    );
   }
 }

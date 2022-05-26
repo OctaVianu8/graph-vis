@@ -12,6 +12,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:graph_vis_test_1/util.dart';
 import '../graph/node.dart';
 import '../widgets/desc_or_pseudo.dart';
+import 'package:graph_vis_test_1/widgets/stack_view.dart';
 
 class DFSScreen extends StatefulWidget {
   final String title;
@@ -32,7 +33,9 @@ class DFSScreen extends StatefulWidget {
 class _DFSScreenState extends State<DFSScreen> {
   late Graph graph;
   Map<int, NodeStates> node_state = Map();
+  Map<int, int> stack_pos = Map();
   List<int> dfstack = [];
+  List<int> vistack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
@@ -45,8 +48,20 @@ class _DFSScreenState extends State<DFSScreen> {
       title: widget.title,
       source: widget.source,
       begin: widget.begin,
-      graphW: GraphW( source: widget.source, visited: node_state, ),
-      algoWidget: StackWidget(),
+      graphW: GraphW(
+        source: widget.source,
+        state: node_state,
+        stack: dfstack,
+        vistack: vistack,
+      ),
+      algoWidget: Column(
+        children: [
+          StackView(queue: dfstack,name: 'Stack',state:NodeStates.stacked),
+          StackView(queue: vistack,name: 'Output', state:NodeStates.visited),
+        ],
+      ),
+      next_func: advanceDfs,
+      prev_func: () {},
     );
   }
 
@@ -65,9 +80,10 @@ class _DFSScreenState extends State<DFSScreen> {
   }
 
   void advanceDfs() {
+    if(dfstack.isEmpty) return;
     setState(() {
       int front = dfstack.last;
-
+      vistack.add(front);
       dfstack.removeLast();
       for (Node adj
           in graph.getOutEdges(Node.Id(front)).map((e) => e.destination)) {
@@ -80,38 +96,5 @@ class _DFSScreenState extends State<DFSScreen> {
 
       print(node_state);
     });
-  }
-}
-
-class StackWidget extends StatefulWidget {
-  const StackWidget({Key? key}) : super(key: key);
-
-  @override
-  State<StackWidget> createState() => _StackWidgetState();
-}
-
-class _StackWidgetState extends State<StackWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(16.0),
-      color: Colors.blue[200],
-      child: SizedBox(
-        width: 600,
-        child: Scrollbar(
-          controller: ScrollController(initialScrollOffset: 0),
-          child: ListView.builder(
-            controller: ScrollController(initialScrollOffset: 0),
-            scrollDirection: Axis.horizontal,
-            itemCount: 6, //stack.size
-            itemBuilder: (context, index) {
-              return Container(
-                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                  child: Text('da'));
-            },
-          ),
-        ),
-      ),
-    );
   }
 }
