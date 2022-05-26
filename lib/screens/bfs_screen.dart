@@ -31,10 +31,10 @@ class BFSScreen extends StatefulWidget {
 }
 
 class _BFSScreenState extends State<BFSScreen> {
-  late Graph graph;
+  final Graph graph = Graph();
   Map<int, NodeStates> node_state = Map();
   List<int> bfstack = [];
-  List<int> vistack= [];
+  List<int> vistack = [];
   List<String> buttonText = ['Switch to PSEUDOCODE', 'Switch to DESCRIPTION'];
   int tutorialState = 0;
 
@@ -53,13 +53,13 @@ class _BFSScreenState extends State<BFSScreen> {
         state: node_state,
         stack: bfstack,
         vistack: vistack,
-        graph: Graph(),
-        onlyLoadNodes: true,
+        graph: graph,
+        onlyLoadNodes: false,
       ),
       algoWidget: Column(
         children: [
-          StackView(queue: bfstack,name: 'Queue',state:NodeStates.stacked),
-          StackView(queue: vistack,name: 'Output', state:NodeStates.visited),
+          StackView(queue: bfstack, name: 'Queue', state: NodeStates.stacked),
+          StackView(queue: vistack, name: 'Output', state: NodeStates.visited),
         ],
       ),
       next_func: advanceBfs,
@@ -70,16 +70,11 @@ class _BFSScreenState extends State<BFSScreen> {
   @override
   void initState() {
     bfstack.add(widget.begin);
-    node_state[widget.begin]=NodeStates.stacked;
-    loadGraph();
-  }
-
-  void loadGraph() async {
-    loadGraphFromAsset(widget.source).then((value) => graph = value);
+    node_state[widget.begin] = NodeStates.stacked;
   }
 
   void advanceBfs() {
-    if(bfstack.isEmpty) return;
+    if (bfstack.isEmpty) return;
     setState(() {
       int front = bfstack.first;
       bfstack.removeAt(0);

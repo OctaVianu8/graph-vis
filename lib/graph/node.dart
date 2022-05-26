@@ -13,10 +13,7 @@ class NodeW extends StatefulWidget {
   final Color stackedColorMax = Color.fromARGB(255, 255, 153, 0);
   final Color visited_c = Colors.red;
   NodeW(
-      {Key? key,
-      required this.state,
-      required this.hueShift,
-      required this.id})
+      {Key? key, required this.state, required this.hueShift, required this.id})
       : super(key: key);
 
   @override
@@ -46,16 +43,20 @@ class _NodeWState extends State<NodeW> {
         break;
       case NodeStates.visited:
         {
-          boxColor = HSLColor.lerp(HSLColor.fromColor(widget.visitedColorMin),
-                                    HSLColor.fromColor(widget.visitedColorMax),
-                                    widget.hueShift ?? 0)!.toColor();
+          boxColor = HSLColor.lerp(
+                  HSLColor.fromColor(widget.visitedColorMin),
+                  HSLColor.fromColor(widget.visitedColorMax),
+                  widget.hueShift ?? 0)!
+              .toColor();
         }
         break;
       case NodeStates.stacked:
         {
-          boxColor = HSLColor.lerp(HSLColor.fromColor(widget.stackedColorMin),
-                                    HSLColor.fromColor(widget.stackedColorMax),
-                                    widget.hueShift ?? 0)!.toColor();
+          boxColor = HSLColor.lerp(
+                  HSLColor.fromColor(widget.stackedColorMin),
+                  HSLColor.fromColor(widget.stackedColorMax),
+                  widget.hueShift ?? 0)!
+              .toColor();
         }
         break;
       default:
@@ -66,25 +67,32 @@ class _NodeWState extends State<NodeW> {
     }
 
     return Container(
-        //constraints: BoxConstraints(),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border(
-            bottom: getNodeBorderSide(),
-            top: getNodeBorderSide(),
-            left: getNodeBorderSide(),
-            right: getNodeBorderSide(),
-          ),
-          color: boxColor,
-          boxShadow: [
-            BoxShadow(
-                color: Color.lerp(boxColor, Colors.black, 0.2)!.withAlpha(50),
-                spreadRadius: 2.0,
-                blurRadius: 15.0,
-                blurStyle: BlurStyle.normal),
-          ],
+      //constraints: BoxConstraints(),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border(
+          bottom: getNodeBorderSide(),
+          top: getNodeBorderSide(),
+          left: getNodeBorderSide(),
+          right: getNodeBorderSide(),
         ),
-        child: Text('Node ${widget.id}'));
+        color: boxColor,
+        boxShadow: [
+          BoxShadow(
+              color: Color.lerp(boxColor, Colors.black, 0.2)!.withAlpha(50),
+              spreadRadius: 2.0,
+              blurRadius: 15.0,
+              blurStyle: BlurStyle.normal),
+        ],
+      ),
+      child: Center(
+        child: Text(' ${widget.id}',
+            style: Theme.of(context).textTheme.headline4!.copyWith(
+                color: boxColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white)),
+      ),
+    );
   }
 }

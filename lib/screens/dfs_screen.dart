@@ -31,7 +31,7 @@ class DFSScreen extends StatefulWidget {
 }
 
 class _DFSScreenState extends State<DFSScreen> {
-  late Graph graph;
+  final Graph graph = Graph();
   Map<int, NodeStates> node_state = Map();
   Map<int, int> stack_pos = Map();
   List<int> dfstack = [];
@@ -52,13 +52,28 @@ class _DFSScreenState extends State<DFSScreen> {
         source: widget.source,
         state: node_state,
         stack: dfstack,
-        graph: Graph(),
+        graph: graph,
         vistack: vistack,
       ),
-      algoWidget: Column(
+      algoWidget: Row(
         children: [
-          StackView(queue: dfstack,name: 'Stack',state:NodeStates.stacked),
-          StackView(queue: vistack,name: 'Output', state:NodeStates.visited),
+          Flexible(
+            fit: FlexFit.loose,
+            flex: 4,
+            child: Column(
+              children: [
+                StackView(
+                    queue: dfstack, name: 'Stack', state: NodeStates.stacked),
+                StackView(
+                    queue: vistack, name: 'Output', state: NodeStates.visited),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                ElevatedButton(onPressed: advanceDfs, child: Text('Next Step')),
+          ),
         ],
       ),
       next_func: advanceDfs,
@@ -70,18 +85,11 @@ class _DFSScreenState extends State<DFSScreen> {
   void initState() {
     dfstack.add(widget.begin);
     node_state[dfstack.last] = NodeStates.stacked;
-    initGraph();
-  }
-
-  void initGraph() async {
-    loadGraphFromAsset(widget.source).then((value) {
-      graph = value;
-      print(graph.edges);
-    });
+    //initGraph();
   }
 
   void advanceDfs() {
-    if(dfstack.isEmpty) return;
+    if (dfstack.isEmpty) return;
     setState(() {
       int front = dfstack.last;
       vistack.add(front);

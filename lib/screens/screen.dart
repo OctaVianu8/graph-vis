@@ -63,7 +63,7 @@ class _ScreenState extends State<Screen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Flexible(
-            flex: 3,
+            flex: 4,
             child: Container(
               padding: EdgeInsets.all(16.0),
               margin: EdgeInsets.all(16.0),
@@ -72,24 +72,15 @@ class _ScreenState extends State<Screen> {
               child: Column(
                 children: [
                   Flexible(
+                    fit: FlexFit.tight,
+                    flex: 2,
                     child: widget.graphW,
                   ),
-                  Container(
-                    color: Colors.blue[100],
-                    child: SizedBox(
-                      height: 300, //cam din burta dar na
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          widget.algoWidget,
-                          ElevatedButton(
-                              onPressed: widget.prev_func,
-                              child: Text('Previous Step')),
-                          ElevatedButton(
-                              onPressed: widget.next_func,
-                              child: Text('Next Step')),
-                        ],
-                      ),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Container(
+                      color: Colors.blue[100],
+                      child: widget.algoWidget,
                     ),
                   )
                 ],

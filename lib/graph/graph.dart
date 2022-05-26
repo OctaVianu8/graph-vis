@@ -13,8 +13,18 @@ class GraphW extends StatefulWidget {
   final Map state;
   final List<int> vistack;
   final List<int> stack;
+  final Function? whenGraphLoaded;
   final Graph graph;
-  GraphW({Key? key,required this.graph, this.source, required this.state, required this.vistack,  required this.stack, this.onlyLoadNodes}) : super(key: key);
+  GraphW(
+      {Key? key,
+      required this.graph,
+      this.source,
+      required this.state,
+      required this.vistack,
+      required this.stack,
+      this.whenGraphLoaded,
+      this.onlyLoadNodes})
+      : super(key: key);
 
   @override
   State<GraphW> createState() => _GraphWState();
@@ -25,16 +35,15 @@ class _GraphWState extends State<GraphW> {
   final attractionRate = 50.0;
   final attractionPrecentage = 100.0;
 
-
   @override
   Widget build(BuildContext context) {
-    Map stackMap=Map();
+    Map stackMap = Map();
 
-    for(int i=0;i<widget.stack.length;i++){
-      stackMap[widget.stack[i]]=i/widget.stack.length;
+    for (int i = 0; i < widget.stack.length; i++) {
+      stackMap[widget.stack[i]] = i / widget.stack.length;
     }
-    for(int i=0;i<widget.vistack.length;i++){
-      stackMap[widget.vistack[i]]=i/widget.vistack.length;
+    for (int i = 0; i < widget.vistack.length; i++) {
+      stackMap[widget.vistack[i]] = i / widget.vistack.length;
     }
     return InteractiveViewer(
       constrained: false,
@@ -64,12 +73,13 @@ class _GraphWState extends State<GraphW> {
 
   @override
   void initState() {
-    if (widget.source != null) loadGraphFromAsset(widget.source!, onlyLoadNodes: widget.onlyLoadNodes?? false);
+    if (widget.source != null)
+      loadGraphFromAsset(widget.source!,
+          onlyLoadNodes: widget.onlyLoadNodes ?? false);
     // debug visited[Node.Id(2)] = true
   }
-  
 
-  void loadGraphFromAsset(String name, {bool onlyLoadNodes=false}) async {
+  void loadGraphFromAsset(String name, {bool onlyLoadNodes = false}) async {
     print('aici\n');
 
     String data = await DefaultAssetBundle.of(context).loadString(name);
@@ -78,15 +88,16 @@ class _GraphWState extends State<GraphW> {
       for (String line in LineSplitter.split(data)) {
         var nrs = line.split(' ');
         //print(nrs[0] + ' ' + nrs[1] + 'aici\n');
-        if(onlyLoadNodes)
-        {
-          if(!widget.graph.contains(node: Node.Id(int.parse(nrs[0])))) widget.graph.addNode(Node.Id(int.parse(nrs[0])));
-          if(!widget.graph.contains(node: Node.Id(int.parse(nrs[1])))) widget.graph.addNode(Node.Id(int.parse(nrs[1])));
-        }
-        else
-        {
-          widget.graph.addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
-          widget.graph.addEdge(Node.Id(int.parse(nrs[1])), Node.Id(int.parse(nrs[0])));
+        if (onlyLoadNodes) {
+          if (!widget.graph.contains(node: Node.Id(int.parse(nrs[0]))))
+            widget.graph.addNode(Node.Id(int.parse(nrs[0])));
+          if (!widget.graph.contains(node: Node.Id(int.parse(nrs[1]))))
+            widget.graph.addNode(Node.Id(int.parse(nrs[1])));
+        } else {
+          widget.graph
+              .addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
+          widget.graph
+              .addEdge(Node.Id(int.parse(nrs[1])), Node.Id(int.parse(nrs[0])));
         }
       }
       //evil position hack
@@ -94,6 +105,7 @@ class _GraphWState extends State<GraphW> {
         e.position = Offset(Random().nextDouble() * 10.0 + 250.0,
             Random().nextDouble() * 10.0 + 250.0);
       }
+      if (widget.whenGraphLoaded != null) widget.whenGraphLoaded!();
     });
   }
 }
