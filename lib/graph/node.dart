@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 enum NodeStates { stacked, visited, idle }
 
 class NodeW extends StatefulWidget {
-  NodeStates state = NodeStates.idle;
-  final int passPos;
-  final int stackPos;
-  final int stackSize;
+  final NodeStates? state;
+  final double? hueShift;
   final id;
   final Color visitedColorMin = Colors.blue;
   final Color visitedColorMax = Color.fromARGB(255, 35, 0, 131);
@@ -16,9 +15,7 @@ class NodeW extends StatefulWidget {
   NodeW(
       {Key? key,
       required this.state,
-      required this.stackPos,
-      required this.passPos,
-      required this.stackSize,
+      required this.hueShift,
       required this.id})
       : super(key: key);
 
@@ -49,12 +46,16 @@ class _NodeWState extends State<NodeW> {
         break;
       case NodeStates.visited:
         {
-          boxColor = widget.visitedColorMin;
+          boxColor = HSLColor.lerp(HSLColor.fromColor(widget.visitedColorMin),
+                                    HSLColor.fromColor(widget.visitedColorMax),
+                                    widget.hueShift ?? 0)!.toColor();
         }
         break;
       case NodeStates.stacked:
         {
-          boxColor = widget.stackedColorMin;
+          boxColor = HSLColor.lerp(HSLColor.fromColor(widget.stackedColorMin),
+                                    HSLColor.fromColor(widget.stackedColorMax),
+                                    widget.hueShift ?? 0)!.toColor();
         }
         break;
       default:
@@ -65,9 +66,10 @@ class _NodeWState extends State<NodeW> {
     }
 
     return Container(
+        //constraints: BoxConstraints(),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          //borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(12),
           border: Border(
             bottom: getNodeBorderSide(),
             top: getNodeBorderSide(),

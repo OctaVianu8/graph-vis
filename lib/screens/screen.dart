@@ -77,7 +77,7 @@ class _ScreenState extends State<Screen> {
                   Container(
                     color: Colors.blue[100],
                     child: SizedBox(
-                      height: 120,
+                      height: 300, //cam din burta dar na
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

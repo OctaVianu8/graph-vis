@@ -10,6 +10,7 @@ Future<Graph> loadGraphFromAsset(String name) async {
     var nrs = line.split(' ');
     //print(nrs[0] + ' ' + nrs[1] + 'aici\n');
     graph.addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
+    graph.addEdge(Node.Id(int.parse(nrs[1])), Node.Id(int.parse(nrs[0])));
   }
   return graph;
 }
