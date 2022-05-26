@@ -5,6 +5,7 @@ import 'package:graphview/GraphView.dart';
 
 import '../graph/node.dart';
 import '../screens/dfs_screen.dart';
+import '../screens/pad_screen.dart';
 
 class _Card {
   String algo_name;
@@ -21,6 +22,7 @@ class AlgoCardList {
   void add_all_cards() {
     add_bfs_card();
     add_dfs_card();
+    add_pad_card();
   }
 
   void add_bfs_card() {
@@ -38,8 +40,21 @@ class AlgoCardList {
 
   void add_dfs_card() {
     String _name = 'Depth-first search (DFS)';
-    Image _photo = (Image.asset('DFS_cover.png'));
+    Image _photo = (Image.asset('BFS_cover.png'));
     Widget _screen = DFSScreen(
+      title: _name,
+      source: "graph_data/example1.txt",
+      begin: 1,
+    );
+    _Card _card =
+        _Card(algo_name: _name, algo_photo: _photo, algo_screen: _screen);
+    lista.add(_card);
+  }
+
+  void add_pad_card() {
+    String _name = 'Paduri de multimi Disjuncte';
+    Image _photo = (Image.asset('DFS_cover.png'));
+    Widget _screen = PadScreen(
       title: _name,
       source: "graph_data/example1.txt",
       begin: 1,

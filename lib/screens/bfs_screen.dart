@@ -53,6 +53,8 @@ class _BFSScreenState extends State<BFSScreen> {
         state: node_state,
         stack: bfstack,
         vistack: vistack,
+        graph: Graph(),
+        onlyLoadNodes: true,
       ),
       algoWidget: Column(
         children: [
