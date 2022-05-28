@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'GraphVis2000'),
       //home: const DfsScreen(name: "Dfs Ecran lets goo"),

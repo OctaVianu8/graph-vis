@@ -15,37 +15,36 @@ class CoursesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[200],
-      margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+      //clipBehavior: Clip.antiAlias,
       child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            nume_algoritm,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           poza_algoritm,
-          TextButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => widget_algoritm));
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Learn Algorithm',
-                style: TextStyle(
-                  fontSize: 32,
-                ),
+          Text(
+              nume_algoritm,
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
               ),
             ),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => widget_algoritm));
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Learn Algorithm',
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
