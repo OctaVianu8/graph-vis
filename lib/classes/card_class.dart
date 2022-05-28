@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:graph_vis_test_1/screens/bfs_screen.dart';
 import 'package:graphview/GraphView.dart';
@@ -30,7 +29,7 @@ class AlgoCardList {
     Image _photo = (Image.asset('BFS_cover.png'));
     Widget _screen = BFSScreen(
       title: _name,
-      source: "graph_data/example1.txt", 
+      source: "graph_data/example1.txt",
       begin: 1,
     );
     _Card _card =
@@ -52,7 +51,7 @@ class AlgoCardList {
   }
 
   void add_pad_card() {
-    String _name = 'Paduri de multimi Disjuncte';
+    String _name = 'Union Find (Disjoint Arrays)';
     Image _photo = (Image.asset('DFS_cover.png'));
     Widget _screen = PadScreen(
       title: _name,

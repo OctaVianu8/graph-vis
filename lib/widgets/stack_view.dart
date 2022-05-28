@@ -48,6 +48,7 @@ class _QueueWidgetState extends State<StackView> {
                         id: widget.queue[index],
                         hueShift: index / widget.queue.length,
                         state: widget.state ?? NodeStates.idle,
+                        addPadding: false,
                       ),
                     );
                   },

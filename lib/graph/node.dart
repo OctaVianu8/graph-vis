@@ -6,6 +6,7 @@ enum NodeStates { stacked, visited, idle }
 class NodeW extends StatefulWidget {
   final NodeStates? state;
   final double? hueShift;
+  final bool? addPadding;
   final id;
   final Color visitedColorMin = Colors.blue;
   final Color visitedColorMax = Color.fromARGB(255, 35, 0, 131);
@@ -13,7 +14,11 @@ class NodeW extends StatefulWidget {
   final Color stackedColorMax = Color.fromARGB(255, 255, 153, 0);
   final Color visited_c = Colors.red;
   NodeW(
-      {Key? key, required this.state, required this.hueShift, required this.id})
+      {Key? key,
+      required this.state,
+      required this.hueShift,
+      required this.id,
+      this.addPadding})
       : super(key: key);
 
   @override
@@ -68,7 +73,8 @@ class _NodeWState extends State<NodeW> {
 
     return Container(
       //constraints: BoxConstraints(),
-      padding: EdgeInsets.all(16),
+      padding:
+          (widget.addPadding ?? true) ? EdgeInsets.all(16) : EdgeInsets.all(0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border(
@@ -87,7 +93,7 @@ class _NodeWState extends State<NodeW> {
         ],
       ),
       child: Center(
-        child: Text(' ${widget.id}',
+        child: Text(' ${widget.id} ',
             style: Theme.of(context).textTheme.headline4!.copyWith(
                 color: boxColor.computeLuminance() > 0.5
                     ? Colors.black

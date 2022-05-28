@@ -54,7 +54,7 @@ class _PadScreenState extends State<PadScreen> {
     ScrollController _scrollController = ScrollController();
 
     return Screen(
-      algo_name: 'Dfs',
+      algo_name: 'pad',
       title: widget.title,
       source: widget.source,
       begin: widget.begin,
@@ -104,8 +104,9 @@ class _PadScreenState extends State<PadScreen> {
           ),
           ElevatedButton(
             onPressed: state == PadStates.idle ? addEdge : () {},
-            child:
-                Text(state == PadStates.idle ? 'Add edge' : 'Adding edge...'),
+            child: Text(state == PadStates.idle
+                ? 'Connect sets'
+                : 'Connecting sets...'),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 32.0, 0, 0),
@@ -113,7 +114,7 @@ class _PadScreenState extends State<PadScreen> {
               onPressed: state == PadStates.findingRoot ? findRoot : () {},
               child: Text(state == PadStates.findingRoot
                   ? 'Next Step'
-                  : 'Waiting to edge...'),
+                  : 'Waiting to choose connection...'),
             ),
           ),
         ],
@@ -148,53 +149,65 @@ class _PadScreenState extends State<PadScreen> {
     setState(() {
       int nodea = int.parse(a.text);
       int nodeb = int.parse(b.text);
-      graph.addEdge(Node.Id(nodea), Node.Id(nodeb));
-      graph.addEdge(Node.Id(nodeb), Node.Id(nodea));
       a.text = "";
       b.text = "";
       state = PadStates.findingRoot;
-
-      if (height[nodea]! <= height[nodeb]!) {
-        visited.add(nodea);
-        parent[nodea] = nodeb;
-        if (height[nodea]! == height[nodeb]!) {
-          height[nodeb] = height[nodeb]! + 1;
-        }
-        node_state[nodea] = NodeStates.stacked;
-      } else {
-        visited.add(nodeb);
-        parent[nodeb] = nodea;
-        node_state[nodeb] = NodeStates.stacked;
-      }
+      node_state[nodea] = NodeStates.stacked;
+      node_state[nodeb] = NodeStates.stacked;
+      visited.add(nodea);
+      visited.add(nodeb);
     });
   }
 
   void findRoot() {
     setState(() {
-      int back = visited.last;
-      if (parent[back] != back) {
-        visited.add(parent[back]!);
-        node_state[parent[back]!] = NodeStates.stacked;
+      print(height);
+      int backa = visited[visited.length - 2];
+      int backb = visited[visited.length - 1];
+      bool ok = true;
+      if (parent[backa] != backa) {
+        visited.add(parent[backa]!);
+        node_state[parent[backa]!] = NodeStates.stacked;
+        ok = false;
       } else {
-        for (int i in visited) {
-          if (i != back) {
-            graph.removeEdge(Edge(Node.Id(i), Node.Id(parent[i]!)));
-            graph.removeEdge(Edge(Node.Id(parent[i]!), Node.Id(i)));
-            parent[i] = parent[back]!;
-            node_state[i] = NodeStates.idle;
-            graph.addEdgeS(Edge(Node.Id(i), Node.Id(parent[i]!)));
-            graph.addEdgeS(Edge(Node.Id(parent[i]!), Node.Id(i)));
+        visited.add(backa);
+      }
+      if (parent[backb] != backb) {
+        visited.add(parent[backb]!);
+        node_state[parent[backb]!] = NodeStates.stacked;
+        ok = false;
+      } else {
+        visited.add(backb);
+      }
+      if (ok) {
+        if (graph.getEdgeBetween(Node.Id(backa), Node.Id(backb)) == null) {
+          graph.addEdge(Node.Id(backa), Node.Id(backb));
+          graph.addEdge(Node.Id(backb), Node.Id(backa));
+        } else {
+          int back = height[backa]! > height[backb]! ? backa : backb;
+          parent[backa] = back;
+          parent[backb] = back;
+          if (height[backa] == height[backb]) height[back] = height[back]! + 1;
+          for (int i in visited) {
+            if (i != back) {
+              graph.removeEdge(Edge(Node.Id(i), Node.Id(parent[i]!)));
+              graph.removeEdge(Edge(Node.Id(parent[i]!), Node.Id(i)));
+              parent[i] = parent[back]!;
+              node_state[i] = NodeStates.idle;
+              graph.addEdgeS(Edge(Node.Id(i), Node.Id(parent[i]!)));
+              graph.addEdgeS(Edge(Node.Id(parent[i]!), Node.Id(i)));
+            }
           }
-        }
-        heads.clear();
-        visited.clear();
-        for (int i in parent.keys) {
-          if (i == parent[i]) {
-            heads.add(i);
-            node_state[i] = NodeStates.visited;
+          heads.clear();
+          visited.clear();
+          for (int i in parent.keys) {
+            if (i == parent[i]) {
+              heads.add(i);
+              node_state[i] = NodeStates.visited;
+            }
           }
+          state = PadStates.idle;
         }
-        state = PadStates.idle;
       }
     });
   }
