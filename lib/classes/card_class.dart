@@ -22,6 +22,7 @@ class AlgoCardList {
     add_bfs_card();
     add_dfs_card();
     add_pad_card();
+    add_arb_card();
   }
 
   void add_bfs_card() {
@@ -39,7 +40,7 @@ class AlgoCardList {
 
   void add_dfs_card() {
     String _name = 'Depth-first search (DFS)';
-    Image _photo = (Image.asset('BFS_cover.png'));
+    Image _photo = (Image.asset('DFS_cover.png'));
     Widget _screen = DFSScreen(
       title: _name,
       source: "graph_data/example1.txt",
@@ -52,7 +53,20 @@ class AlgoCardList {
 
   void add_pad_card() {
     String _name = 'Union Find (Disjoint Arrays)';
-    Image _photo = (Image.asset('DFS_cover.png'));
+    Image _photo = (Image.asset('PAD_cover.png'));
+    Widget _screen = PadScreen(
+      title: _name,
+      source: "graph_data/example1.txt",
+      begin: 1,
+    );
+    _Card _card =
+        _Card(algo_name: _name, algo_photo: _photo, algo_screen: _screen);
+    lista.add(_card);
+  }
+
+  void add_arb_card() {
+    String _name = 'Interval Trees';
+    Image _photo = (Image.asset('ARB_cover.png'));
     Widget _screen = PadScreen(
       title: _name,
       source: "graph_data/example1.txt",
