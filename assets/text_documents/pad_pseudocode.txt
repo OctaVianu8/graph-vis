@@ -1,0 +1,29 @@
+Node GetSet(node)
+{
+    initialize lazy_update_stack
+    current_node=node
+    while current_node.hasParent
+    {
+        add current_node to lazy_update_stack
+        current_node=current_node.parent
+    }
+
+    root=current_node
+
+    for each passed_node in lazy_update_stack
+    {
+        passed_node.parent=root
+    }
+
+    return root
+}
+
+void UniteSetsOf(node_a, node_b)
+{
+    set_a=GetSet(node_a)
+    set_b=GetSet(node_b)
+    if set_a.tree_size < set_b.tree_size
+        set_a.parent= set_b
+    else 
+        set_b.parent= set_a
+}

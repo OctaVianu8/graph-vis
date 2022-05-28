@@ -1,0 +1,9 @@
+The Union-Find data structure  (also known as the Disjoint-Set data structrue) is a data structure used for keeping track of Disjoint sets of objects.
+What this data structure excels at is, well, set union. The two most important operators are:
+1- get the set of an object
+2- unite the sets of two objects
+The way it achieves this functionality is by treating objects/sets as nodes in a graph, composed of trees. The roots of the trees(in blue)
+denote the sets while the nodes of the trees denote the elements of the set.
+To get the set of an objects, we need to find the root of its tree, and to unite two sets, we need to set one of the roots as a child of the other.
+Several optimisations make this algorithm incredibly fast, such as always addning the smaller of the two trees as a child to the other when
+uniting two sets, and lazily updating the nodes of the trees to set their immediate parent as the root.

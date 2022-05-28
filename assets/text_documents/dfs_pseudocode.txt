@@ -1,8 +1,8 @@
 void DFS(node initNode) //initNode = Initial Node
 {
-    initialize stack;
+    initialize stack
     add initNode to stack
-    note initNode as visited
+    mark initNode as visited
     while stack is not empty
     {
         currNode <- top node of stack

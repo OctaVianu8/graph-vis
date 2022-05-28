@@ -1,8 +1,8 @@
 void BFS(node initNode) //initNode = Start Node
 {
-    initialize queue;
+    initialize queue
     add initNode to queue
-    note initNode as visited
+    mark initNode as visited
     while queue is not empty
     {
         currNode <- front node of queue

@@ -56,10 +56,25 @@ class _BFSScreenState extends State<BFSScreen> {
         graph: graph,
         onlyLoadNodes: false,
       ),
-      algoWidget: Column(
+      algoWidget: Row(
         children: [
-          StackView(queue: bfstack, name: 'Queue', state: NodeStates.stacked),
-          StackView(queue: vistack, name: 'Output', state: NodeStates.visited),
+          Flexible(
+            fit: FlexFit.loose,
+            flex: 4,
+            child: Column(
+              children: [
+                StackView(
+                    queue: bfstack, name: 'Queue', state: NodeStates.stacked),
+                StackView(
+                    queue: vistack, name: 'Output', state: NodeStates.visited),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                ElevatedButton(onPressed: advanceBfs, child: Text('Next Step')),
+          ),
         ],
       ),
       next_func: advanceBfs,
