@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:graph_vis_test_1/graph/graph.dart';
+import 'package:graphview/GraphView.dart';
 
 class GraphBuilderScreen extends StatefulWidget {
   const GraphBuilderScreen({Key? key}) : super(key: key);
@@ -9,9 +13,27 @@ class GraphBuilderScreen extends StatefulWidget {
 }
 
 class _GraphBuilderScreenState extends State<GraphBuilderScreen> {
+  final Graph graph = Graph();
   String _edgeData = '';
 
-  void updateEdgeData(String edgeData) {}
+  void updateEdgeData(String edgeData) {
+    setState(() {
+      List<Edge> edges = graph.edges;
+      List<Node> nodes = graph.nodes;
+      for (Node n in nodes) {
+        graph.removeNode(n);
+      }
+      for (String line in LineSplitter.split(_edgeData)) {
+        var nrs = line.split(' ');
+        graph.addEdge(Node.Id(int.parse(nrs[0])), Node.Id(int.parse(nrs[1])));
+        graph.addEdge(Node.Id(int.parse(nrs[1])), Node.Id(int.parse(nrs[0])));
+      }
+      for (Node e in graph.nodes) {
+        e.position = e.position +
+            Offset(Random().nextDouble() * 10.0, Random().nextDouble() * 10.0);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +42,18 @@ class _GraphBuilderScreenState extends State<GraphBuilderScreen> {
 
     List<Widget> graphAndTextForm = [
       Flexible(
-        flex: 1,
+        flex: 4,
         fit: FlexFit.loose,
         child: GraphW(
           stack: [],
           state: {},
           vistack: [],
+          graph: graph,
         ),
       ),
-      Flexible(
-        flex: 1,
+      Expanded(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
@@ -41,7 +64,7 @@ class _GraphBuilderScreenState extends State<GraphBuilderScreen> {
                   hintText: 'Enter the edges',
                 ),
                 maxLines: null,
-                minLines: 5,
+                minLines: 1,
                 onChanged: (edgeData) {
                   _edgeData = edgeData;
                 },
@@ -63,19 +86,5 @@ class _GraphBuilderScreenState extends State<GraphBuilderScreen> {
     return Column(
       children: graphAndTextForm,
     );
-  }
-}
-
-class CreatedGraphWidget extends StatefulWidget {
-  const CreatedGraphWidget({Key? key}) : super(key: key);
-
-  @override
-  State<CreatedGraphWidget> createState() => CreatedGraphWidgetState();
-}
-
-class CreatedGraphWidgetState extends State<CreatedGraphWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

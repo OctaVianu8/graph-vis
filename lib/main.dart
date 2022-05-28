@@ -12,11 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'GraphAlgoVis',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'GraphVis2000'),
+      home: MyHomePage(title: 'GraphAlgoVis'),
       //home: const DfsScreen(name: "Dfs Ecran lets goo"),
     );
   }

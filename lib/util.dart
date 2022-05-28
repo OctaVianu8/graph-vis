@@ -2,6 +2,12 @@ import 'dart:convert';
 import 'package:graphview/GraphView.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+Graph mainGraph = Graph();
+
+void changeMainGraph(Graph other) {
+  mainGraph = other;
+}
+
 Future<Graph> loadGraphFromAsset(String name) async {
   //print('aici\n');
   Graph graph = Graph();
@@ -13,10 +19,4 @@ Future<Graph> loadGraphFromAsset(String name) async {
     graph.addEdge(Node.Id(int.parse(nrs[1])), Node.Id(int.parse(nrs[0])));
   }
   return graph;
-}
-
-Map<String, Graph> preloads = Map();
-
-void addGraph(String name, String file) async {
-  loadGraphFromAsset(file).then((value) => preloads[name] = value);
 }
